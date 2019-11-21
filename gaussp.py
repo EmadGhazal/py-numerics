@@ -45,19 +45,19 @@ def gaussp(A, b):
 def main():
 
     A_in = """
-            2 -2 -1
+            5 3 4
 
-            4 1 -2
+            3 3 3
 
-            -2 1 -1
+            4 3 6
                 """
 
     b_in = """
-            -2
+            19
 
-            1
+            14
 
-            -3
+            19
             """
 
     A = np.genfromtxt(StringIO(A_in), delimiter = " ")

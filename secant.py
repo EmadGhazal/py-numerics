@@ -1,37 +1,53 @@
 from math import *
 
-from stewart import f
+import numpy as np
 
 def secant(f, x0, x1, tol):
 
-    iterate = [x0, x1]
+    itr = np.array([x0, x1])
 
-    error = []
+    err = np.array([])
 
-    rel_error = [0]
+    rerr = np.array([0.0])
 
-    iterate.append(x1 - (f(x1) * (x1 - x0)) / (f(x1) - f(x0)))
+    itr = np.append(itr, x1 - (f(x1) * (x1 - x0)) / (f(x1) - f(x0)))
 
     while True:
 
-        if abs(iterate[-1] - iterate[-2]) < tol:
+        if abs(itr[-1] - itr[-2]) < tol:
 
             break
 
-        iterate.append(iterate[-1] - (f(iterate[-1]) * (iterate[-1] - iterate[-2])) / (f(iterate[-1]) - f(iterate[-2])))
+        itr = np.append(itr, itr[-1] - (f(itr[-1]) * (itr[-1] - itr[-2])) / (f(itr[-1]) - f(itr[-2])))
 
-    for i in xrange(len(iterate)):
+    while True:
 
-        error.append(abs(iterate[i] - iterate[-1]))
+        if itr[-1] == itr[-2]:
 
-    for i in xrange(1, len(error)):
+            itr = np.delete(itr, -1)
 
-            rel_error.append(error[i] / (error[i - 1] ** ((1.0 + sqrt(5)) / 2.0)))
+            continue
 
-    return iterate, error, rel_error
+        break
 
-iterate, error, rel_error = secant(f, 1.7, 1.8, 0.5 * (10 ** (-8)))
+    for i in range(len(itr)):
 
-for i in xrange(len(iterate)):
+        err = np.append(err, abs(itr[i] - itr[-1]))
 
-    print "{:19.16f}    {:19.16f}   {:19.16f}".format(iterate[i], error[i], rel_error[i])
+    for i in range(1, len(err)):
+
+            rerr = np.append(rerr, err[i] / (err[i - 1] ** ((1.0 + sqrt(5)) / 2.0)))
+
+    return itr, err, rerr
+
+def main():
+
+    f = lambda x: 6 * cos(x) - x * sin(x)
+
+    itr, err, rerr = secant(f, 1, 2, 0.5 * (10 ** (-6)))
+
+    for i in range(len(itr)):
+
+        print("{:19.16f}    {:19.16f}   {:19.16f}".format(itr[i], err[i], rerr[i]))
+
+main()

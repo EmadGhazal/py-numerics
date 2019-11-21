@@ -16,7 +16,7 @@ def fpi(f, x0, tol):
 
     while True:
 
-        print root[-1]
+        print(root[-1])
 
         root.append(f(root[-1]))
 
@@ -26,10 +26,10 @@ def fpi(f, x0, tol):
 
             break
 
-    for i in xrange(1, len(error)):
+    for i in range(1, len(error)):
 
         error_rel.append(error[i] / error[i - 1])
 
     return root[-1], error_rel[-1]
 
-print fpi(lambda x: log(7.0 - x), 0.0, 2.0 * (10 ** (-6)))
+print(fpi(lambda x: 6 / tan(x), pi, 0.5 * (10 ** (-6))))

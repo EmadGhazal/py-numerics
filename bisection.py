@@ -2,13 +2,15 @@ from math import *
 
 import sys
 
+import numpy as np
+
 def bisection(f, a, b, tol):
 
-    iterate = []
+    iterate = np.array([])
 
-    error = []
+    error = np.array([])
 
-    rel_error = [0.0]
+    rel_error = np.array([0.0])
 
     fa = f(a)
 
@@ -16,13 +18,13 @@ def bisection(f, a, b, tol):
 
     if not (fa * fb < 0):
 
-        print "Error: the interval provided does not contain a root."
+        print("Error: the interval provided does not contain a root.")
 
-        sys.exit()
+        return None
 
     while True:
 
-        iterate.append((a + b) / 2.0)
+        iterate = np.append(iterate, (a + b) / 2.0)
 
         fc = f(iterate[-1])
 
@@ -44,18 +46,28 @@ def bisection(f, a, b, tol):
 
                 fa = fc
 
-    for i in xrange(len(iterate)):
+    for i in range(len(iterate)):
 
-        error.append(abs(iterate[i] - iterate[-1]))
+        error = np.append(error, abs(iterate[i] - iterate[-1]))
 
-    for i in xrange(1, len(error)):
+    for i in range(1, len(error)):
 
-        rel_error.append(error[i] / error[i - 1])
+        rel_error = np.append(rel_error, error[i] / error[i - 1])
 
-    return iterate, error, rel_error
+    #return iterate, error, rel_error
 
-iterate, error, rel_error = bisection(lambda x: 1.0 / x, -2.0, 1.0, 0.5 * (10 ** (-8)))
+    return iterate[-1]
 
-for i in xrange(len(iterate)):
+def main():
 
-    print "{:19.16f}    {:19.16f}   {:19.16f}".format(iterate[i], error[i], rel_error[i])
+    #iterate, error, rel_error = bisection(lambda x: cos(x) - x, 0, 1.0, 0.5 * (10 ** (-6)))
+
+    #for i in range(len(iterate)):
+
+        #print("{:19.16f}    {:19.16f}   {:19.16f}".format(iterate[i], error[i], rel_error[i]))
+
+    iterate = bisection(lambda x: cos(x) - x, 0, 1.0, 0.5 * (10 ** (-6)))
+
+    print(iterate)
+
+#main()
